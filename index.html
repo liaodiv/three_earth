@@ -4,8 +4,27 @@
     <meta charset="UTF-8">
     <title>EARTH</title>
     <link href="src/css/main.css" rel="stylesheet" >
+    <style>
+        .gui {
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: aliceblue;
+            z-index: 100;
+            width: 200px;
+            height: 40px;
+            padding-top: 20px;
+            padding-left: 10px;
+
+        }
+    </style>
 </head>
 <body>
+    <div class="gui">
+        <button id="add">增加</button>
+        <button id="reduce">减少</button>
+        <button id="reset">复位</button>
+    </div>
     <script src="src/lib/three.js"></script>
     <script src="src/lib/Detector.js"></script>
     <script src="src/lib/stats.min.js"></script>

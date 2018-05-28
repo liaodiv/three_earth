@@ -48,7 +48,7 @@ function init() {
 
 	object = new THREE.Mesh( geometry, material);
 	object.position.set(0,0,200);
-	scene.add(object);
+	/*scene.add(object);*/
 
 	/*object = new THREE.Mesh( new THREE.TetrahedronBufferGeometry( 75, 0 ), material );
 	object.position.set( 300, 0, 200 );
