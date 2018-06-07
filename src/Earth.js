@@ -49,9 +49,9 @@ earth = {
 			long: -1,
 			lat: 1 / 2
 		}
-		var loader = new THREE.TextureLoader().load('src/textures/UV_Grid_Sm.jpg');
-		var material = new THREE.MeshPhongMaterial({map: loader, side: THREE.DoubleSide});
-
+		//var loader = new THREE.TextureLoader().load('src/textures/UV_Grid_Sm.jpg');
+		//var material = new THREE.MeshPhongMaterial({map: loader, side: THREE.DoubleSide});
+		var lineMaterial = new THREE.LineBasicMaterial({color: 0x0000ff});
 
 		var t0 = new THREE.Vector2(0, 0);//图片左下角
 		var t1 = new THREE.Vector2(1, 0);//图片右下角
@@ -62,8 +62,45 @@ earth = {
 			for (var j = 1; j <= ( this.fun) ; j++) {
 				//console.log(i, j,this.zindex,this.fun);
 				(function fun(lon,lat) {
-					var geometry = that.oneToFour(point.long + lon / that.fun, point.lat - lat /that.fun);
+					console.log(lon + 1,lat);
+					var geometry = that.oneToLines(point.long + lon / that.fun, point.lat - lat /that.fun);
 
+					geometry.faceVertexUvs[0].push(
+						[t0, t1, t2],
+						[t1, t3, t2]
+					)
+
+					var grid = new THREE.Line(
+						geometry,
+						lineMaterial
+					)
+					that.mymesh.push(grid);
+					scene.add(grid)
+				})(i,j)
+
+			}
+			//this.picture(geometry,i,function (mesh) {scene.add(mesh);})
+		}
+
+	},
+	create_jpg:function () {
+		var that = this;
+		//从北极点开始
+		var point = {
+			long: -1,
+			lat: 1 / 2
+		}
+		var t0 = new THREE.Vector2(0, 0);//图片左下角
+		var t1 = new THREE.Vector2(1, 0);//图片右下角
+		var t2 = new THREE.Vector2(0, 1);
+		var t3 = new THREE.Vector2(1, 1);//图片右上角
+
+		for (var i = 0; i < 8 ; i++) {
+			for (var j = 1; j <= 4; j++) {
+				(function (lon,lat) {
+					var loader = new THREE.TextureLoader().load('src/textures/earth_jpg/'+ lat+'-'+(lon + 1)+'.jpg');
+					var material = new THREE.MeshPhongMaterial({map: loader, side: THREE.DoubleSide});
+					var geometry = that.oneToFour(point.long + lon / that.fun, point.lat - lat /that.fun);
 					geometry.faceVertexUvs[0].push(
 						[t0, t1, t2],
 						[t1, t3, t2]
@@ -78,10 +115,9 @@ earth = {
 				})(i,j)
 
 			}
-			//this.picture(geometry,i,function (mesh) {scene.add(mesh);})
 		}
-
-	},
+	}
+	,
 	oneToFour: function (long, lat) {
 		var geometry = new THREE.Geometry();
 		//起点开始顺时针计算
@@ -106,9 +142,26 @@ earth = {
 		return geometry;
 
 	},
+	oneToLines:function (long, lat) {
+		var geometry = new THREE.Geometry();
+		//起点开始顺时针计算
+		var length = 1 / this.fun;
+		geometry.vertices.push(
+			this.longlatToxyz(long, lat),
+			this.longlatToxyz(long + length, lat),
+			this.longlatToxyz(long + length, lat + length),
+			this.longlatToxyz(long, lat + length),
+			this.longlatToxyz(long, lat)
+		)
+		return geometry;
+	},
 	render: function () {
 		this.cratelglat();
+	},
+	render1:function () {
+		this.create_jpg();
 	}
+
 	//贴图
 
 }

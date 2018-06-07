@@ -9,9 +9,9 @@ function init() {
 	camera.position.y = 400;
 	scene = new THREE.Scene();
 	var light, object;
-	var ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
+	var ambientLight = new THREE.AmbientLight( 0xcccccc, 1 );
 	scene.add( ambientLight );
-	var pointLight = new THREE.PointLight( 0xffffff, 0.8 );
+	var pointLight = new THREE.PointLight( 0xffffff, 1.6 );
 	camera.add( pointLight );
 	scene.add( camera );
 
